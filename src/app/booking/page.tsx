@@ -17,6 +17,15 @@ export default function BookingPage() {
   const [profileError, setProfileError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectVenue, setSelectVenue] = useState<string>("");
+  const [contactNumber, setContactNumber] = useState<string>("");
+  const [nameLastname, setNameLastname] = useState<string>("");
+
+  useEffect(() => {
+    if (profile) {
+      setNameLastname(profile.name);
+      setContactNumber(profile.tel);
+    }
+  }, [profile]);
 
   useEffect(() => {
     let mounted = true;
@@ -48,10 +57,12 @@ export default function BookingPage() {
   const dispatch = useDispatch<AppDispatch>();
 
   const makeBooking = () => {
-    if(!profile) return window.alert("Please complete all booking details.");
+    if(!nameLastname || !contactNumber || !selectedDate || !selectVenue) {
+      return window.alert("Please complete all booking details.");
+    }
     const bookingData: BookingItem = {
-      nameLastname: profile.name,
-      tel: profile.tel,
+      nameLastname: nameLastname,
+      tel: contactNumber,
       bookDate: selectedDate?.toDateString() || "",
       venue: selectVenue || "",
     };
@@ -93,13 +104,15 @@ export default function BookingPage() {
             <h2 className="text-lg font-medium text-gray-900">Reservation</h2>
             <TextField
               name="Name-Lastname"
-              defaultValue={profile?.name || ''}
-              sx={{backgroundColor: '#f3f4f6'}}
+              value={nameLastname}
+              onChange={(e) => setNameLastname(e.target.value)}
+              label="Name-Lastname"
             />
             <TextField
               name="Contact-Number"
-              defaultValue={profile?.tel || ''}
-              sx={{backgroundColor: '#f3f4f6'}}
+              label="Contact-Number"
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
             />
             <FormControl fullWidth>
               <InputLabel id="venue-label">Venue</InputLabel>
@@ -122,7 +135,6 @@ export default function BookingPage() {
               color="primary"
               fullWidth
               onClick={makeBooking}
-              disabled={!selectedDate || !profile}
             >
               Book Venue
             </Button>

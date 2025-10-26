@@ -22,10 +22,10 @@ export default function BookingList() {
     }
 
     return (
-        <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Your Bookings</h2>
+        <div className="flex flex-col space-y-4 p-8 rounded-lg h-full gap-4">
+            <h2 className="text-xl font-semibold mb-4 text-black">Your Bookings</h2>
             {bookings.map((booking: BookingItem, index: number) => (
-                <div key={index} className="bg-white shadow rounded-lg p-4 flex flex-col space-y-2">
+                <div key={index} className="bg-gray-100 shadow rounded-lg p-4 flex flex-col space-y-2">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <p className="text-sm font-medium text-gray-500">Name</p>
